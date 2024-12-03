@@ -16,7 +16,7 @@ O processador está modularizado em 4 componentes: ```cpu```, ```control_unit```
 ### Ula
 Esse componente consiste em uma máquina de estados que realiza operações numéricas com os registradores passados por parâmetro:
 
-| Código do estado  | Right columns |
+| Código do estado  | Operação      |
 | --------------    |:-------------:|
 | 0000              | Soma          |
 | 0001              | Subtração     |
