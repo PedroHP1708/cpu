@@ -12,6 +12,26 @@ O processador está modularizado em 4 componentes: ```cpu```, ```control_unit```
 ### Cpu
 
 ### Control_unit
+Esse é o componente principal do programa, sendo o responsável por acionar os componentes necessários para cada tarefa passada como parâmetro pela ```cpu```.
+
+| Código do estado  | Operação      | Componente    |
+| --------------    |:-------------:|:-------------:|
+| 0000              | Soma          | ULA           |
+| 0001              | Subtração     | ULA           |
+| 0010              | And           | ULA           |
+| 0011              | Or            | ULA           |
+| 0100              | Not           | ULA           |
+| 0100              | Not           | ULA           |
+| 0101              | Cmp           | ULA           |
+| 0110              | Jmp           | Memory        |
+| 0111              | Jeq           | Memory        |
+| 1000              | Jgr           | Memory        |
+| 1001              | Load          | Memory        |
+| 1010              | Store         | Memory        |
+| 1011              | Mov           | Memory                                     |
+| 1100              | In            | Input_unit (feito na própria control_unit) |
+| 1101              | Out           | Output_unit (feito na própria control_unit) |
+
 
 ### Ula
 Esse componente consiste em uma máquina de estados que realiza operações numéricas com os registradores passados por parâmetro:
