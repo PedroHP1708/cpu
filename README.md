@@ -7,13 +7,13 @@ Esse código binário então é convertido para número hexadecimal, e guardado 
 Tendo o arquivo estruturado nesse padrão, podemos executar nossa CPU.
 
 ## Arquitetura
-O processador está modularizado em 4 componentes: ```cpu```, ```control_unit```, ```ula``` e ```memory```. 
+O processador está modularizado em 4 componentes: ```cpu```, ```unit_control```, ```ula``` e ```memory```. 
 1. O primeiro, funciona como um pré-processador das instruções, lendo as linhas do arquivo hexadecimal (interpretado como binário) e separando o que seria um valor de registrador e o que seria a operação especificada
-2. Já o segundo componente, ```control_unit```, serve como um distribuidor de tarefas, lendo as instruções pré-processadas enviadas pela cpu e acionando os componentes necessários para executá-las.
-3. A ```ula``` realiza as operações da ```control_unit``` de ordem numérica: soma, subtração, multiplicação lógica (AND), soma lógica (OR) e negação (NOT).
+2. Já o segundo componente, ```unit_control```, serve como um distribuidor de tarefas, lendo as instruções pré-processadas enviadas pela cpu e acionando os componentes necessários para executá-las.
+3. A ```ula``` realiza as operações da ```unit_control``` de ordem numérica: soma, subtração, multiplicação lógica (AND), soma lógica (OR) e negação (NOT).
 4. Por último, a ```memory``` é responsável por efetivamente ler os valores do arquivo ```.hex``` (ou poderia ser ```.mif``` caso estivéssemos simulando pelo Quartus).
 
-### Cpuo
+### Cpu
 Esse componente possui 4 estados:
 
 | Estado            | Efeito        |
@@ -23,12 +23,12 @@ Esse componente possui 4 estados:
 | IMMEDIATE_NUMBER  | Leitura do número imediato           |
 | IDLE              | Estado de espera (adicionado para sincroniza dos registradores)            |
 
-Os valores de operações e operadores lidos (e números imediatos quando houver), são então enviados para a ```control_unit``` realizar as operações com esses valores.
+Os valores de operações e operadores lidos (e números imediatos quando houver), são então enviados para a ```unit_control``` realizar as operações com esses valores.
 
 Segue um pequeno esquemático do funcionamento dessa máquina de estados:
 ![Esquemátic](https://github.com/PedroHP1708/cpu/blob/main/recursos/Diagrama.jpeg)
 
-### Control_unit
+### Unit_control
 Esse é o componente principal do programa, sendo o responsável por acionar os componentes necessários para cada tarefa passada como parâmetro pela ```cpu```.
 
 | Código do estado  | Operação      | Componente    |
@@ -46,8 +46,8 @@ Esse é o componente principal do programa, sendo o responsável por acionar os 
 | 1001              | Load          | Memory        |
 | 1010              | Store         | Memory        |
 | 1011              | Mov           | Memory                                     |
-| 1100              | In            | Input_unit (feito na própria control_unit) |
-| 1101              | Out           | Output_unit (feito na própria control_unit) |
+| 1100              | In            | Input_unit (feito na própria unit_control) |
+| 1101              | Out           | Output_unit (feito na própria unit_control) |
 
 ```vhdl
 entity unit_control is
@@ -99,7 +99,7 @@ entity ula is
     );
 end ula;
 ```
-Sendo as entradas, os registradores e a operação passados pela ```control_unit```, e as saídas as flags de overflow, carry, sinal e zero e o resultado da operação especificada com base nos valores dados.
+Sendo as entradas, os registradores e a operação passados pela ```unit_control```, e as saídas as flags de overflow, carry, sinal e zero e o resultado da operação especificada com base nos valores dados.
 
 ### Memory
 Esse último componente é o responsável por ler os valores do arquivo contendo o código em hexadecimal. 
@@ -119,3 +119,4 @@ Para leitura, usa-se o endereço ```address``` para obter o conteúdo da mesma n
 
 ## Instruções não implementadas
 As instruções de desvio de lógica (JMP, JEQ e JGR) e atribuição e recuperação de valores da memória (LOAD e STORE) não conseguiram ser implementadas a tempo da entrega. Durante a apresentação houve uma tentativa de desenvolvimento das mesmas, porém sem obter sucesso. A tentativa de implementação está salva aqui no repositório na pasta ```tentativa```. Na versão final, estes comandos estão com comentários da ideia que seria implementada caso o grupo tivesse conseguido finalizar.
+Em linhas gerais, o problema estava na leitura do valor imediato nesses comandos e na duplicidade de valores de indexação na memória. A ideia para resolver, que não conseguiu ser implementada, consistia na passagem do programCounter para a ```unit_control```, a fim de os valores serem os mesmos e um desvio de lógica efetivamente ocorrer nas instruções de "jump".
