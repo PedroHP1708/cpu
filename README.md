@@ -26,7 +26,7 @@ Esse componente consiste em uma máquina de estados que realiza operações num�
 
 A ula possui os seguintes parâmetros:
 
-```
+```vhdl
 entity ula is
     Port (
         a               : in  STD_LOGIC_VECTOR(7 downto 0);
