@@ -84,6 +84,9 @@ def assemble_line(line, num_linha, labels):
     if not line:
         return [], num_linha
 
+    # Remover todas as vírgulas da linha
+    line = line.replace(",", "")
+
     tokens = line.split()
     opcode = tokens[0]  # Primeira palavra é a instrução
     binary_output = []
@@ -95,8 +98,9 @@ def assemble_line(line, num_linha, labels):
         if line.endswith(":"):
             return [], num_linha
         
-        primeiro = tokens[1].replace(",", "") if len(tokens) > 1 else ""
-        segundo = tokens[2].replace(",", "") if len(tokens) > 2 else ""
+        # Agora os parâmetros estão sem vírgulas
+        primeiro = tokens[1] if len(tokens) > 1 else ""
+        segundo = tokens[2] if len(tokens) > 2 else ""
         
         # WAIT: sem argumentos
         if opcode == "WAIT":
@@ -138,7 +142,7 @@ def assemble_line(line, num_linha, labels):
         
         # NOT, IN, OUT: apenas 1 registrador, obrigatoriamente não-literal
         elif opcode in ["NOT", "IN", "OUT"]:
-            reg = REGISTRADORES.get(tokens[1].replace(",", ""), None)
+            reg = REGISTRADORES.get(tokens[1], None)
             binary_output.append(binary_instruction + "00" + reg)
         
         # JMP, JEQ, JGR: Operações que usam endereço literal
@@ -153,7 +157,6 @@ def assemble_line(line, num_linha, labels):
                 raise ValueError(f"Erro na linha {num_linha}: rótulo '{address_label}' não encontrado.")
 
     return binary_output, num_linha
-
 
 def converter_assembly_para_binario(codigo):
     # Primeira passagem para identificar labels
@@ -176,7 +179,7 @@ def binario_para_hex(binario):
     return hex(int(binario, 2))[2:].zfill(2).upper()  # Retorna em formato hexadecimal, com 2 caracteres
 
 # Entrada para o nome de um arquivo fornecido pelo usuário
-caminho = "caminho_entrada_arquivo"  
+caminho = "/home/pedro/Downloads/"  
 nome_arquivo = input("Qual o nome do arquivo? ")
 caminho_entrada = caminho + nome_arquivo
 # Saída por padrão para o nome do arquivo .hex
@@ -187,6 +190,10 @@ codigo_binario = converter_assembly_para_binario(codigo_assembly)
 
 # Gerar os valores hexadecimais
 codigo_hex = [binario_para_hex(linha) for linha in codigo_binario]
+
+# Completar até 256 linhas com 'F0'
+while len(codigo_hex) < 256:
+    codigo_hex.append("F0")
 
 if codigo_hex:
     escrever_arquivo_hex(codigo_hex, caminho_saida)
