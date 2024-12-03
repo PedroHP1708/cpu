@@ -15,8 +15,31 @@ O processador está modularizado em 4 componentes: ```cpu```, ```control_unit```
 
 ### Ula
 Esse componente consiste em uma máquina de estados que realiza operações numéricas com os registradores passados por parâmetro:
-#### vdvdvdf
-   vdbdbvvdb
 
-2.
+| Código do estado  | Right columns |
+| --------------    |:-------------:|
+| 0000              | Soma          |
+| 0001              | Subtração     |
+| 0010              | And           |
+| 0011              | Or            |
+| 0100              | Not           |
+
+A ula possui os seguintes parâmetros:
+
+```
+entity ula is
+    Port (
+        a               : in  STD_LOGIC_VECTOR(7 downto 0);
+        b               : in  STD_LOGIC_VECTOR(7 downto 0);
+        operation       : in  STD_LOGIC_VECTOR(3 downto 0);  -- Operation selector
+        result          : buffer STD_LOGIC_VECTOR(7 downto 0);  -- 8-bit result
+        flagOverflow    : out STD_LOGIC;                     
+        flagCarry       : out STD_LOGIC;
+        flagZero        : out STD_LOGIC;  -- Flag Zero
+        flagSignal      : out STD_LOGIC   -- Flag Signal (Sinal)
+    );
+end ula;
+```
+Sendo as entradas, os registradores e a operação passados pela ```control_unit```, e as saídas as flags de overflow, carry, sinal e zero e o resultado da operação especificada com base nos valores dados
+
 ### Memory
