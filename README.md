@@ -7,3 +7,16 @@ Esse código binário então é convertido para número hexadecimal, e guardado 
 Tendo o arquivo estruturado nesse padrão, podemos executar nossa CPU.
 
 ## Arquitetura
+O processador está modularizado em 4 componentes: ```cpu```, ```control_unit```, ```ula``` e ```memory```.
+
+### Cpu
+
+### Control_unit
+
+### Ula
+Esse componente consiste em uma máquina de estados que realiza operações numéricas com os registradores passados por parâmetro:
+1. vdvdvdf
+   vdbdbvvdb
+
+2.
+### Memory
