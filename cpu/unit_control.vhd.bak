@@ -1,0 +1,75 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity unit_control is
+    port (
+        OPTIONS    : in  std_logic_vector(3 downto 0);
+        KEY0  : in  std_logic;    						
+        KEY1  : in  std_logic;    						                
+        CLK   : in  std_logic;                    	
+        LEDR0 : out std_logic                     	
+    );
+end unit_control;
+
+architecture Behavioral of unit_control is
+    
+	 component ram256x8 is
+		 Port
+		 (
+			address	: IN STD_LOGIC_VECTOR (4 DOWNTO 0);
+			clock		: IN STD_LOGIC  := '1';
+			data		: IN STD_LOGIC_VECTOR (3 DOWNTO 0);
+			wren		: IN STD_LOGIC ;
+			q			: OUT STD_LOGIC_VECTOR (3 DOWNTO 0)
+		 );
+	 end component;
+	 
+	 component ULA is
+        Port (
+            a           : in  STD_LOGIC_VECTOR(7 downto 0);
+            b           : in  STD_LOGIC_VECTOR(7 downto 0);
+            operation   : in  STD_LOGIC_VECTOR(3 downto 0);
+            result		: out STD_LOGIC_VECTOR(7 downto 0);
+				overflow		: out STD_LOGIC;
+				carry_out	: out STD_LOGIC
+        );
+    end component;
+	 
+	 type CommandTable is array(0 to 7) of std_logic_vector(3 downto 0);
+    
+	 signal commands : CommandTable := (
+        "0000", -- ADD
+		  "0001", -- SUB
+        "0010", -- AND
+        "0011", -- OR
+        "0100", -- NOT
+        "0101", -- CMP
+        "0110", -- JMP
+        "0111", -- JEQ
+        "1000", -- JGR
+		  "1001", -- LOAD
+        "1010", -- STORE
+        "1011", -- MOV
+        "1100", -- IN
+        "1101", -- OUT
+        "1110"  -- WAIT
+    );
+    
+begin
+
+    process (CLK, KEY0)
+    begin
+
+			ULA_inst: ULA
+                port map (
+                    a => a, 
+                    b => b, 
+                    operation => operation, 
+                    result => result,  -- Corrigido para "result"
+                    overflow => overflow,  -- Corrigido para "overflow"
+                    carry_out => carry_out  -- Corrigido para "carry_out"
+                );
+	
+    end process;
+end Behavioral;

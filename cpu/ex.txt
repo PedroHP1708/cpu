@@ -1,0 +1,5 @@
+ADD A B
+ADD A R
+ADD B R
+ADD R R
+ADD A 255

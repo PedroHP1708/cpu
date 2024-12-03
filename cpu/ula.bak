@@ -1,0 +1,45 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+entity ULA is
+    Port (
+        a           : in  STD_LOGIC_VECTOR(7 downto 0);  -- 8-bit input 'a'
+        b           : in  STD_LOGIC_VECTOR(7 downto 0);  -- 8-bit input 'b'
+        operation   : in  STD_LOGIC_VECTOR(2 downto 0);  -- operation selector
+        r			  : out STD_LOGIC_VECTOR(7 downto 0);  -- 8-bit result
+    );
+end ULA;
+
+architecture Behavioral of ULA is
+begin
+	process(a, b, operation)
+    begin
+        case operation is
+            -- ADD operation
+            when "000" =>
+                result <= a xor b;
+                
+            -- SUB operation
+            when "001" =>
+                result <= not a;
+					 
+			   -- AND operation
+            when "010" =>
+                result <= a and b;
+                
+            -- OR operation
+            when "011" =>
+                result <= a or b;
+				
+				-- NOT operation
+				when "100" =>
+					 result <= not a;
+                
+            when others =>
+                result <= (others => '0');
+        end case;
+    end process;
+
+end Behavioral;

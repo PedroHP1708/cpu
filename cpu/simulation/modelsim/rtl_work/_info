@@ -1,0 +1,176 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/Users/15484075/Downloads/Sistemas Digitais - v5/Sistemas Digitais/simulation/modelsim
+Ecpu
+Z1 w1733179454
+Z2 DPx4 ieee 11 numeric_std 0 22 :ASDNFgHXf_ih3J@9F3Ze1
+Z3 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z4 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
+R0
+Z5 8C:/Users/15484075/Downloads/Sistemas Digitais - v5/Sistemas Digitais/CPU.vhd
+Z6 FC:/Users/15484075/Downloads/Sistemas Digitais - v5/Sistemas Digitais/CPU.vhd
+l0
+L10
+V88cfShiLZIeo;4=J<2FSM2
+!s100 =2_`H5BoAFRlGN;iM`9SY2
+Z7 OV;C;10.5b;63
+31
+Z8 !s110 1733179717
+!i10b 1
+Z9 !s108 1733179717.000000
+Z10 !s90 -reportprogress|300|-93|-work|work|C:/Users/15484075/Downloads/Sistemas Digitais - v5/Sistemas Digitais/CPU.vhd|
+Z11 !s107 C:/Users/15484075/Downloads/Sistemas Digitais - v5/Sistemas Digitais/CPU.vhd|
+!i113 1
+Z12 o-93 -work work
+Z13 tExplicit 1 CvgOpt 0
+Abehavioral
+R2
+R3
+R4
+DEx4 work 3 cpu 0 22 88cfShiLZIeo;4=J<2FSM2
+l68
+L20
+VeGzbYY9cKeQ=E@c1kMJ>]2
+!s100 f1jE]dIa^U0b0oo51Hajn0
+R7
+31
+R8
+!i10b 1
+R9
+R10
+R11
+!i113 1
+R12
+R13
+Ememory
+Z14 w1733103503
+Z15 DPx4 ieee 16 std_logic_textio 0 22 V5TSK`;aJKC<l]CEg1>mz1
+R2
+R3
+R4
+R0
+Z16 8C:/Users/15484075/Downloads/Sistemas Digitais - v5/Sistemas Digitais/memory.vhd
+Z17 FC:/Users/15484075/Downloads/Sistemas Digitais - v5/Sistemas Digitais/memory.vhd
+l0
+L9
+Ve2Q_g7o=LgNXDSPmfm6Vh3
+!s100 k?YWKgG33:D?=ZPVS9c6`2
+R7
+31
+R8
+!i10b 1
+R9
+Z18 !s90 -reportprogress|300|-93|-work|work|C:/Users/15484075/Downloads/Sistemas Digitais - v5/Sistemas Digitais/memory.vhd|
+Z19 !s107 C:/Users/15484075/Downloads/Sistemas Digitais - v5/Sistemas Digitais/memory.vhd|
+!i113 1
+R12
+R13
+Abehaviour
+R15
+R2
+R3
+R4
+DEx4 work 6 memory 0 22 e2Q_g7o=LgNXDSPmfm6Vh3
+l37
+L20
+V30=9RMK<[H:JUBX:ZV3R81
+!s100 K^;1D4VmN5[ViPz5L2n?F1
+R7
+31
+R8
+!i10b 1
+R9
+R18
+R19
+!i113 1
+R12
+R13
+Eula
+Z20 w1733179646
+R2
+R3
+R4
+R0
+Z21 8C:/Users/15484075/Downloads/Sistemas Digitais - v5/Sistemas Digitais/ULA.vhd
+Z22 FC:/Users/15484075/Downloads/Sistemas Digitais - v5/Sistemas Digitais/ULA.vhd
+l0
+L5
+VAHhKnJh_F[Z8MOEaUPEXJ1
+!s100 Z8jAnd[Paie0RKB<M@B`P0
+R7
+31
+R8
+!i10b 1
+R9
+Z23 !s90 -reportprogress|300|-93|-work|work|C:/Users/15484075/Downloads/Sistemas Digitais - v5/Sistemas Digitais/ULA.vhd|
+Z24 !s107 C:/Users/15484075/Downloads/Sistemas Digitais - v5/Sistemas Digitais/ULA.vhd|
+!i113 1
+R12
+R13
+Abehavioral
+R2
+R3
+R4
+DEx4 work 3 ula 0 22 AHhKnJh_F[Z8MOEaUPEXJ1
+l19
+L18
+Vfj^^9<09I1JcWaJO2=?Xz3
+!s100 JHHWfCJTU9VKUOPo@KVkA0
+R7
+31
+R8
+!i10b 1
+R9
+R23
+R24
+!i113 1
+R12
+R13
+Eunit_control
+Z25 w1733172808
+R2
+R3
+R4
+R0
+Z26 8C:/Users/15484075/Downloads/Sistemas Digitais - v5/Sistemas Digitais/unit_control.vhd
+Z27 FC:/Users/15484075/Downloads/Sistemas Digitais - v5/Sistemas Digitais/unit_control.vhd
+l0
+L5
+Vm^Ub3KBJJQhiTRRBUWle22
+!s100 WkRI]P:IkV`gMW7ViBg7R2
+R7
+31
+R8
+!i10b 1
+R9
+Z28 !s90 -reportprogress|300|-93|-work|work|C:/Users/15484075/Downloads/Sistemas Digitais - v5/Sistemas Digitais/unit_control.vhd|
+Z29 !s107 C:/Users/15484075/Downloads/Sistemas Digitais - v5/Sistemas Digitais/unit_control.vhd|
+!i113 1
+R12
+R13
+Abehavioral
+R2
+R3
+R4
+DEx4 work 12 unit_control 0 22 m^Ub3KBJJQhiTRRBUWle22
+l85
+L24
+V3h34gXnRBoPRaEdEjB?lk3
+!s100 AT>0BCS]IY5bBZRWeO3@T0
+R7
+31
+R8
+!i10b 1
+R9
+R28
+R29
+!i113 1
+R12
+R13

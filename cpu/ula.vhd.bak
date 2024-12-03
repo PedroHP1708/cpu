@@ -1,0 +1,64 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;  -- Use numeric_std for unsigned/signed arithmetic
+
+entity ula is
+    Port (
+        a           : in  STD_LOGIC_VECTOR(7 downto 0);  -- 8-bit input 'a'
+        b           : in  STD_LOGIC_VECTOR(7 downto 0);  -- 8-bit input 'b'
+        operation   : in  STD_LOGIC_VECTOR(3 downto 0);  -- operation selector
+        result      : out STD_LOGIC_VECTOR(7 downto 0);  -- 8-bit result
+        overflow    : out STD_LOGIC;                     -- overflow register
+        carry_out   : out STD_LOGIC                      -- carry register
+    );
+end ula;
+
+architecture Behavioral of ula is
+begin
+    process(a, b, operation)
+    begin
+        case operation is
+            -- ADD operation
+            when "0000" =>
+                -- Perform addition (convert to unsigned for arithmetic)
+                result <= std_logic_vector(unsigned(a) + unsigned(b));
+                
+                -- Overflow check for 8-bit addition (max value 255)
+                if (unsigned(a) + unsigned(b)) > to_unsigned(255, 8) then
+                    overflow <= '1';  -- Set overflow if sum exceeds 255 (8-bit max)
+                else
+                    overflow <= '0';
+                end if;
+                
+            -- SUB operation
+            when "0001" =>
+                -- Perform subtraction (convert to unsigned for arithmetic)
+                result <= std_logic_vector(unsigned(a) - unsigned(b));
+                
+                -- Carry-out check for subtraction: borrow occurs when a < b
+                if unsigned(a) < unsigned(b) then
+                    carry_out <= '1';  -- Borrow (carry-out in subtraction)
+                else
+                    carry_out <= '0';
+                end if;
+                
+            -- AND operation
+            when "0010" =>
+                result <= a and b;
+                
+            -- OR operation
+            when "0011" =>
+                result <= a or b;
+                
+            -- NOT operation
+            when "0100" =>
+                result <= not a;
+                
+            when others =>
+                -- Default case, set result, carry_out, and overflow to 0
+                result <= (others => '0');
+                carry_out <= '0';
+                overflow <= '0';
+        end case;
+    end process;
+end Behavioral;

@@ -1,0 +1,7 @@
+
+State Machine - |cpu|state
+Name state.IMMEDIATE_NUMBER state.DECODE state.IDLE state.READ_MEM 
+state.READ_MEM 0 0 0 0 
+state.IDLE 0 0 1 1 
+state.DECODE 0 1 0 1 
+state.IMMEDIATE_NUMBER 1 0 0 1 

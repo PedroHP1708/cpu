@@ -1,0 +1,127 @@
+-- Leitura da linha
+-- XXXX - XX - XX
+-- operação - registrador1 - registrador 2 (interpretar número literal como registrador e ler novamente da memória a linha de baixo)
+
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
+
+entity cpu is
+		Port ( 
+			clk   	 					: in   STD_LOGIC;
+			reset							: in 	 STD_LOGIC;
+			enableRead					: in   STD_LOGIC;
+			inputs 						: in   STD_LOGIC_VECTOR(7 downto 0);
+			outputs						: out  STD_LOGIC_VECTOR(7 downto 0)
+    );
+end entity cpu;
+
+architecture Behavioral of cpu is
+		
+		type state_type is (READ_MEM, DECODE, IMMEDIATE_NUMBER, EXECUTE);
+		signal state: state_type := DECODE; --criando a variável estado e atribui­ndo valor inicial para READ_MEM
+		
+		component unit_control is
+			port (
+				options    : in  std_logic_vector(3 downto 0);  	-- Comando de 4 bits para a ULA
+				reg1       : in  std_logic_vector(7 downto 0);  	-- Sinal de controle (ex: valor do primeiro operando)
+				reg2       : in  std_logic_vector(7 downto 0);  	-- Outro sinal de controle (ex: valor do segundo operando)
+				addr		  : in	 std_logic_vector(7 downto 0);  	-- Endereço de memória e questão
+				clk        : in  std_logic;                     	-- Sinal de controle (ex: clock ou start)	
+				answer 	  : out std_logic_vector(7 downto 0)
+			);
+		 end component;
+		 
+		component Memory is
+			Port (
+				clock			: IN STD_LOGIC  := '1';
+				data			: IN STD_LOGIC_VECTOR (7 DOWNTO 0);
+				rdaddress	: IN STD_LOGIC_VECTOR (7 DOWNTO 0) := "00000000";
+				wraddress	: IN STD_LOGIC_VECTOR (7 DOWNTO 0);
+				wren			: IN STD_LOGIC  := '0';
+				q				: OUT STD_LOGIC_VECTOR (7 DOWNTO 0)
+			);
+		end component;
+		
+		-- Sinais internos para operações
+		signal r1, r2, res  : STD_LOGIC_VECTOR(7 downto 0);
+		
+		-- Sinais internos para memória
+		signal rdaddress, wraddress, data, q     : STD_LOGIC_VECTOR(7 downto 0);
+		signal wren : STD_LOGIC;
+		
+		-- Registradores para leitura
+		signal op					: STD_LOGIC_VECTOR(3 downto 0);
+		signal oper1, oper2		: STD_LOGIC_VECTOR(1 downto 0);
+		signal immediateNumber	: STD_LOGIC_VECTOR(7 downto 0) := "00000000";
+		
+		signal instructionRegister	: STD_LOGIC_VECTOR(3 downto 0); -- Armazenar operação anterior
+		signal programCounter		: STD_LOGIC_VECTOR(7 downto 0); -- Indexar arquivo .mif (ou .hex no modelsim)
+		signal a, b, r					: STD_LOGIC_VECTOR(7 downto 0) := "00000000";
+		
+begin
+
+	ram: Memory
+		port map(
+		  rdaddress => rdaddress,
+		  wraddress => wraddress,
+		  clock => clk,
+		  data => data,
+		  wren => wren,
+		  q => q
+		);
+ 
+	uc: unit_control
+		port map(
+			options => op,
+			addr    => rdaddress,
+			reg1	  => r1,
+			reg2    => r2,
+			clk     => clk,
+			answer  => res
+		);
+
+	process(clk, reset)
+	begin
+		if reset='0' then 
+			state <= DECODE;
+		elsif rising_edge(clk) then
+			case state is
+					when READ_MEM =>
+						rdaddress <= programCounter;
+                  programCounter <= STD_LOGIC_VECTOR(unsigned(programCounter)+1);
+                  state <= DECODE;
+					
+					when DECODE	=>
+						op <= q(7 downto 4);
+						oper1 <= q(3 downto 2);
+						oper2 <= q(1 downto 0);
+						state <= IMMEDIATE_NUMBER;
+					
+					when IMMEDIATE_NUMBER =>
+						if oper1 = "11" or oper2 = "11" then
+						  rdaddress <= programCounter;
+						  programCounter <= STD_LOGIC_VECTOR(unsigned(programCounter)+1);
+						  immediateNumber <= q;
+						  state <= EXECUTE;
+						end if;
+					
+					when EXECUTE => 
+						case oper1 is
+							when "00" => r1 <= a;
+							when "01" => r1 <= b;
+							when "10" => r1 <= r;
+							when "11" => r1 <= immediateNumber;
+						end case;
+						case oper2 is	
+							when "00" => r2 <= a;
+							when "01" => r2 <= b;
+							when "10" => r2 <= r;
+							when "11" => r2 <= immediateNumber;
+						end case;
+					
+					when others =>
+				end case;
+		end if;
+	end process;
+end Behavioral;
