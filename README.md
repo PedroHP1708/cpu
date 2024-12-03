@@ -43,3 +43,6 @@ end ula;
 Sendo as entradas, os registradores e a operação passados pela ```control_unit```, e as saídas as flags de overflow, carry, sinal e zero e o resultado da operação especificada com base nos valores dados
 
 ### Memory
+
+### Arquivos não utilizados na versão final
+***Citar display, input unit, output unit***
