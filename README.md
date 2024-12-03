@@ -7,9 +7,23 @@ Esse código binário então é convertido para número hexadecimal, e guardado 
 Tendo o arquivo estruturado nesse padrão, podemos executar nossa CPU.
 
 ## Arquitetura
-O processador está modularizado em 4 componentes: ```cpu```, ```control_unit```, ```ula``` e ```memory```.
+O processador está modularizado em 4 componentes: ```cpu```, ```control_unit```, ```ula``` e ```memory```. 
+1. O primeiro, funciona como um pré-processador das instruções, lendo as linhas do arquivo hexadecimal (interpretado como binário) e separanado o que seria um valor de registrador e o que seria a operação especificada
+2. Já o segundo componente, ```control_unit```, serve como um distribuidor de tarefas, lendo as instruções pré-processadas enviadas pela cpu e acionando os componentes necessários para executá-las.
+3. A ```ula``` realiza as operações da ```control_unit``` de ordem numérica: soma, subtração, multiplicação lógica (AND), soma lógica (OR) e negação (NOT).
+4. Por último, a ```memory``` é responsável por efetivamente ler os valores do arquivo ```.hex``` (ou poderia ser ```.mif``` caso estivéssemos simulando pelo Quartus).
 
 ### Cpu
+Esse componente possui 4 estados:
+
+| Estado            | Efeito        |
+| --------------    |:-------------:|
+| READ_MEM          | Leitura de instruções padrão da memória          |
+| DECODE            | Decodificação das instruções     |
+| IMMEDIATE_NUMBER  | Leitura do número imediato           |
+| IDLE              | Estado de espera (adicionado para sincroniza dos registradores)            |
+
+Os valores de operações e operadores lidos (e números imediatos quando houver), são então enviados para a ```control_unit``` realizar as operações com esses valores.
 
 ### Control_unit
 Esse é o componente principal do programa, sendo o responsável por acionar os componentes necessários para cada tarefa passada como parâmetro pela ```cpu```.
@@ -60,9 +74,23 @@ entity ula is
     );
 end ula;
 ```
-Sendo as entradas, os registradores e a operação passados pela ```control_unit```, e as saídas as flags de overflow, carry, sinal e zero e o resultado da operação especificada com base nos valores dados
+Sendo as entradas, os registradores e a operação passados pela ```control_unit```, e as saídas as flags de overflow, carry, sinal e zero e o resultado da operação especificada com base nos valores dados.
 
 ### Memory
+Esse último componente é o responsável por ler os valores do arquivo contendo o código em hexadecimal. 
+```vhdl
+entity memory is
+	port
+	(
+		address	: IN STD_LOGIC_VECTOR (7 DOWNTO 0);
+		clock : IN STD_LOGIC;
+		data : IN STD_LOGIC_VECTOR (7 DOWNTO 0);
+		wren : IN STD_LOGIC;
+		q : OUT STD_LOGIC_VECTOR (7 DOWNTO 0)
+	);
+end memory;
+```
+Para leitura, usa-se o endereço ```address``` para obter o conteúdo da mesma na saída ```q```. A escrita depende do valor inserido em ```data```.
 
-### Arquivos não utilizados na versão final
-***Citar display, input unit, output unit***
+## Instruções não implementadas
+As instruções de desvio de lógica (JMP, JEQ e JGR) e atribuição e recuperação de valores da memória (LOAD e STORE) não conseguiram ser implementadas a tempo da entrega. Durante a apresentação houve uma tentativa de desenvolvimento das mesmas, porém sem obter sucesso. A tentativa de implementação está salva aqui no repositório na pasta ```tentativa```. Na versão final, estes comandos estão com comentários da ideia que seria implementada caso o grupo tivesse conseguido finalizar.
