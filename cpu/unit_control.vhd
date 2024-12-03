@@ -159,45 +159,73 @@ begin
 						  r <= res;
 						  
                 when oCMP =>  -- CMP
-                    operation <= oCMP;
+			operation <= oCMP;
+			if     reg1 = "00" then r1 <= a;
+			elsif  reg1 = "01" then r1 <= b;
+			elsif  reg1 = "10" then r1 <= r;
+			elsif  reg1 = "11" then r1 <= imNu;
+			end if;
+			if     reg2 = "00" then r2 <= a;
+			elsif  reg2 = "01" then r2 <= b;
+			elsif  reg2 = "10" then r2 <= r;
+			elsif  reg2 = "11" then r2 <= imNu;
+			end if;
+			r <= res;
+			auxAddr <= addr;
+
                 when oJMP =>  -- JMP
                     operation <= oJMP;
-						  auxaddr <= addr;
+		    -- Alterar de maneira semelhante à feita na CPU (processador) o valor do endereço
+		    -- Seria necessário trazer o valor do programCounter para a unit_control (talvez por parâmetro)
+		    -- e atualizar seu valor com base no número imediato lido.
+
                 when oJEQ =>  -- JEQ
                     operation <= oJEQ;
+		    -- Utilizar o resultado da operação de comparação para alterar a posição da memória de maneira
+                    -- semelhante à anterior, através da atualização do programCounter.
+
                 when oJGR =>  -- JGR
                     operation <= oJGR;
+		    -- Utilizar a flag de sinal da ULA, para fazer essa verificação. Seria necessária a mesma
+		    -- alteração do JMP e do JEQ em termos de memória.
+
                 when oLOAD => -- LOAD
                     operation <= oLOAD;
+		    -- Utilizar o endereço da memória passado como parâmetro número imediato para armazenar no registrador o valor 
+                    -- contido nele
+
                 when oSTORE => -- STORE
                     operation <= oSTORE;
+		    -- Utilizar o endereço passado como número imediato para acessar a memória (instanciada abaixo) e armazenar nela
+		    -- o valor do registrador especificado.
+
                 when oMOV =>  -- MOV
-							operation <= oMOV;
-							if reg1 = "00" and reg2 = "00" then
-								a <= a;
-							elsif reg1 = "00" and reg2 = "01" then
-								a <= b;
-							elsif reg1 = "00" and reg2 = "10" then
-								a <= r;
-							elsif reg1 = "00" and reg2 = "11" then
-								a <= imNu;
-							elsif reg1 = "01" and reg2 = "00" then
-								b <= a;
-							elsif reg1 = "01" and reg2 = "01" then
-								b <= b;
-							elsif reg1 = "01" and reg2 = "10" then
-								b <= r;
-							elsif reg1 = "01" and reg2 = "11" then
-								b <= imNu;
-							elsif reg1 = "10" and reg2 = "00" then
-								r <= a;
-							elsif reg1 = "10" and reg2 = "01" then
-								r <= b;
-							elsif reg1 = "10" and reg2 = "10" then
-								r <= r;
-							elsif reg1 = "10" and reg2 = "11" then
-								r <= imNu;
-							end if;	
+			operation <= oMOV;
+			if reg1 = "00" and reg2 = "00" then
+			a <= a;
+			elsif reg1 = "00" and reg2 = "01" then
+			a <= b;
+			elsif reg1 = "00" and reg2 = "10" then
+			a <= r;
+			elsif reg1 = "00" and reg2 = "11" then
+			a <= imNu;
+			elsif reg1 = "01" and reg2 = "00" then
+			b <= a;
+			elsif reg1 = "01" and reg2 = "01" then
+			b <= b;
+			elsif reg1 = "01" and reg2 = "10" then
+			b <= r;
+			elsif reg1 = "01" and reg2 = "11" then
+			b <= imNu;
+			elsif reg1 = "10" and reg2 = "00" then
+			r <= a;
+			elsif reg1 = "10" and reg2 = "01" then
+			r <= b;
+			elsif reg1 = "10" and reg2 = "10" then
+			r <= r;
+			elsif reg1 = "10" and reg2 = "11" then
+			r <= imNu;
+			end if;	
 						  
                 when oIN =>  -- IN
                     operation <= oIN;
@@ -219,9 +247,9 @@ begin
 
             -- Atualiza o sinal de controle 'previousOp' com a operação atual
             previousOp <= options;
-				regA <= a;
-				regB <= b;
-				regR <= r;
+		regA <= a;
+		regB <= b;
+		regR <= r;
         end if;
     end process;
 
